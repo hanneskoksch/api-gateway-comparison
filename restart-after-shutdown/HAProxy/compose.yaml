@@ -1,0 +1,19 @@
+services:
+  gateway:
+    image: haproxy:3.2.6-alpine
+    container_name: gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - echo-service
+    restart: "no" # restart is done manually
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
+  echo-service:
+    image: python:3.14.0-alpine
+    container_name: echo-service
+    volumes:
+      - ./echo-service:/app
+    working_dir: /app
+    command: python server.py

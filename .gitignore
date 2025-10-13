@@ -1,0 +1,7 @@
+.ipynb_checkpoints/
+chromedriver-mac-arm64
+.venv/
+venv/
+requests.csv
+.DS_Store
+__pycache__/

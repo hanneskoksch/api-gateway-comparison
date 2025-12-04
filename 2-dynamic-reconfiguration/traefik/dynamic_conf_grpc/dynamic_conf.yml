@@ -1,0 +1,13 @@
+http:
+  routers:
+    routerTest:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/`)"
+      service: srv-grpc
+
+  services:
+    srv-grpc:
+      loadBalancer:
+        servers:
+        - url: h2c://echo-a:5002/

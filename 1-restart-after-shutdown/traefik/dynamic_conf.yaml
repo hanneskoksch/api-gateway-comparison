@@ -1,0 +1,11 @@
+http:
+  routers:
+    my-router:
+      rule: "PathPrefix(`/`)"
+      service: echo-http-server
+
+  services:
+    echo-http-server:
+      loadBalancer:
+        servers:
+        - url: http://echo-service:80/

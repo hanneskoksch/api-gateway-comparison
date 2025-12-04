@@ -1,0 +1,28 @@
+services:
+  gateway:
+    image: nginx:1.29.3-alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - echo-a
+      - echo-b
+    restart: "no"
+    volumes:
+      - ./${MODE}/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  echo-a:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-a-nginx
+    environment:
+      - SERVICE_NAME=echo-A
+
+  echo-b:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-b-nginx
+    environment:
+      - SERVICE_NAME=echo-B

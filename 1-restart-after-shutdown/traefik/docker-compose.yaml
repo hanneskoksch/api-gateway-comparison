@@ -1,0 +1,22 @@
+services:
+  gateway:
+    image: traefik:v3.5
+    container_name: traefik
+    command:
+      - "--configFile=/etc/traefik/traefik.yml"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./dynamic_conf.yaml:/etc/traefik/dynamic_conf/dynamic_conf.yaml:ro
+    depends_on:
+      - echo-service
+    restart: "no"
+
+  echo-service:
+    image: python:3.14.0-alpine
+    container_name: echo-service-traefik
+    volumes:
+      - ../base/echo-service:/app
+    working_dir: /app
+    command: python server.py

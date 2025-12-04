@@ -1,0 +1,15 @@
+http:
+  routers:
+    routerTest:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/`)"
+      service: echo-http-service
+
+  services:
+    echo-http-service:
+      loadBalancer:
+        servers:
+        - url: http://echo-a:5001/
+        # - url: http://echo-b:5001/
+        # - url: http://echo-c:5001/

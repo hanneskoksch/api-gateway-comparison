@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service Echo {
+  rpc Ping (EchoRequest) returns (EchoReply);
+  rpc StreamPing (stream EchoRequest) returns (stream EchoReply);
+}
+
+message EchoRequest {
+  string message = 1;
+}
+
+message EchoReply {
+  string message = 1;
+}

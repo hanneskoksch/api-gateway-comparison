@@ -1,0 +1,13 @@
+{
+  servers {
+    protocols h1 h2c
+  }
+}
+
+:80 {
+    reverse_proxy echo-a:5002 {
+        transport http {
+            versions h2c
+        }
+    }
+}

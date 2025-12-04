@@ -1,0 +1,30 @@
+services:
+  gateway:
+    image: traefik:v3.5
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--configFile=/etc/traefik/traefik.yml"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./dynamic_conf_${MODE}/dynamic_conf.yml:/etc/traefik/dynamic_conf/dynamic_conf.yml:ro
+    depends_on:
+      - echo-a
+
+  echo-a:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-a-traefik
+    environment:
+      - SERVICE_NAME=echo-A
+
+  echo-b:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-b-traefik
+    environment:
+      - SERVICE_NAME=echo-B

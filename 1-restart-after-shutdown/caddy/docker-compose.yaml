@@ -1,0 +1,19 @@
+services:
+  gateway:
+    image: caddy:2.8.4-alpine
+    container_name: caddy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - echo-service
+    restart: "no"
+
+  echo-service:
+    image: python:3.14.0-alpine
+    container_name: echo-service-caddy
+    volumes:
+      - ../base/echo-service:/app
+    working_dir: /app
+    command: python server.py

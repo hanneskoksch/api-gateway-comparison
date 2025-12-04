@@ -1,0 +1,42 @@
+services:
+  tyk-redis:
+    image: redis:7-alpine
+    container_name: tyk-redis
+    ports:
+      - 6379:6379
+
+  gateway:
+    image: tykio/tyk-gateway:v5.10.0
+    # build:
+    #   dockerfile: Dockerfile
+    container_name: tyk
+    environment:
+      TYK_GW_LISTENPORT: "80"
+      TYK_GW_SECRET: "12345"
+      TYK_GW_POLICIES_POLICYCONNECTIONSTRING: ""
+    volumes:
+      - ./tyk.conf:/opt/tyk-gateway/tyk.conf
+      - ./${MODE}/apps:/opt/tyk-gateway/apps
+    depends_on:
+      - tyk-redis
+      - echo-a
+      - echo-b
+    ports:
+      - "8080:80"
+    restart: "no"
+
+  echo-a:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-a-tyk
+    environment:
+      - SERVICE_NAME=echo-A
+
+  echo-b:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-b-tyk
+    environment:
+      - SERVICE_NAME=echo-B

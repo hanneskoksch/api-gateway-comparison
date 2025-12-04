@@ -1,0 +1,3 @@
+:80 {
+    reverse_proxy echo-a:5001
+}

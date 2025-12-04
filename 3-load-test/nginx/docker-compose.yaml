@@ -1,0 +1,40 @@
+services:
+  gateway:
+    image: nginx:1.29.3-alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - echo-a
+      # - echo-b
+      # - echo-c
+    restart: "no"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx-round-robin.conf:/etc/nginx/nginx.conf:ro
+
+  echo-a:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.http
+    container_name: echo-http-a-nginx
+    environment:
+      - SERVICE_NAME=echo-A
+    ports:
+      - "5001:5001"
+
+  # echo-b:
+  #   build:
+  #     context: ../base
+  #     dockerfile: Dockerfile.http
+  #   container_name: echo-http-b-nginx
+  #   environment:
+  #     - SERVICE_NAME=echo-B
+
+  # echo-c:
+  #   build:
+  #     context: ../base
+  #     dockerfile: Dockerfile.http
+  #   container_name: echo-http-c-nginx
+  #   environment:
+  #     - SERVICE_NAME=echo-C

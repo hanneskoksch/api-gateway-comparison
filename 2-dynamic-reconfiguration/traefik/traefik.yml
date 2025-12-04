@@ -1,0 +1,16 @@
+entryPoints:
+  web:
+    address: :80
+  traefik:
+    address: :8080
+
+providers:
+  file:
+    directory: /etc/traefik/dynamic_conf
+
+api:
+  dashboard: true
+
+log:
+  format: json
+  level: WARN

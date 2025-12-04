@@ -1,0 +1,28 @@
+services:
+  gateway:
+    image: haproxy:3.2.6-alpine
+    container_name: gateway
+    ports:
+      - "8080:80"
+    volumes:
+      - ./${MODE}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - echo-a
+      - echo-b
+    restart: "no"
+
+  echo-a:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-a-haproxy
+    environment:
+      - SERVICE_NAME=echo-A
+
+  echo-b:
+    build:
+      context: ../base
+      dockerfile: Dockerfile.${MODE}
+    container_name: echo-${MODE}-b-haproxy
+    environment:
+      - SERVICE_NAME=echo-B

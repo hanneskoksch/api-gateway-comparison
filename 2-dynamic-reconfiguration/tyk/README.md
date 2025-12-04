@@ -1,0 +1,1 @@
+The additional Docker file was used to manually set up Tyk in a container that includes a distro. However, this was not used in the experiment. 
